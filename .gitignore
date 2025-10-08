@@ -1,0 +1,27 @@
+# Node artifacts
+node_modules/
+.next/
+.turbo/
+out/
+
+# Python artifacts
+__pycache__/
+.venv/
+env/
+
+# Logs and caches
+*.log
+.pytest_cache/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+.coverage
+
+# Editor
+.idea/
+.vscode/
+
