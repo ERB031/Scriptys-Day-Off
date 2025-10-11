@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add:*)",
+      "Bash(if exist nul del nul)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(.venv/Scripts/python:*)",
+      "Bash(.venv/Scripts/pip install:*)",
+      "Bash(npm run dev:*)",
+      "Bash(where psql)",
+      "Bash(curl:*)",
+      "Bash(psql:*)",
+      "Read(//c/Program Files/PostgreSQL/**)",
+      "Bash(\"/c/Program Files/PostgreSQL/18/bin/psql.exe\" --version)",
+      "Bash(\"/c/Program Files/PostgreSQL/18/bin/psql.exe\" -U postgres -c \"CREATE DATABASE scriptys_day_off;\")",
+      "Bash(PGPASSWORD=Rebgraet57 \"/c/Program Files/PostgreSQL/18/bin/psql.exe\" -U postgres -c \"CREATE DATABASE scriptys_day_off;\")",
+      "Bash(PGPASSWORD=Rebgraet57 \"/c/Program Files/PostgreSQL/18/bin/psql.exe\" -U postgres -c \"CREATE USER scripty WITH PASSWORD ''password'';\")",
+      "Bash(PGPASSWORD=Rebgraet57 \"/c/Program Files/PostgreSQL/18/bin/psql.exe\" -U postgres -c \"GRANT ALL PRIVILEGES ON DATABASE scriptys_day_off TO scripty;\")",
+      "Bash(PGPASSWORD=Rebgraet57 \"/c/Program Files/PostgreSQL/18/bin/psql.exe\" -U postgres -d scriptys_day_off -c \"GRANT ALL ON SCHEMA public TO scripty;\")",
+      "Bash(PGPASSWORD=password \"/c/Program Files/PostgreSQL/18/bin/psql.exe\" -U scripty -d scriptys_day_off -f \"backend/database/schema.sql\")",
+      "Bash(PGPASSWORD=Rebgraet57 \"/c/Program Files/PostgreSQL/18/bin/psql.exe\":*)",
+      "Bash(PGPASSWORD=password \"/c/Program Files/PostgreSQL/18/bin/psql.exe\" -U scripty -d scriptys_day_off -f \"backend/database/seed_rate_cards.sql\")",
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

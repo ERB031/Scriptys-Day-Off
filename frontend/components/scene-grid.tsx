@@ -16,7 +16,6 @@ import {
   BatchSceneAssignmentPayload
 } from "../lib/api";
 import { Scene } from "../lib/types";
-import { BreakdownSheetModal } from "./breakdown-sheet-modal";
 
 type Props = {
   scenes: Scene[];
@@ -83,7 +82,6 @@ export function SceneGrid({ scenes, onScenesChange, onSceneUpdated, uploadId }: 
   const [bulkDeleting, setBulkDeleting] = useState(false);
   const [batchProcessing, setBatchProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [breakdownScene, setBreakdownScene] = useState<Scene | null>(null);
 
   const locationColorMap = useMemo(() => {
     const map = new Map<string, string>();
@@ -114,16 +112,6 @@ export function SceneGrid({ scenes, onScenesChange, onSceneUpdated, uploadId }: 
     });
   }, [scenes]);
 
-  useEffect(() => {
-    if (!breakdownScene) {
-      return;
-    }
-    const stillExists = scenes.some(scene => scene.id === breakdownScene.id);
-    if (!stillExists) {
-      setBreakdownScene(null);
-    }
-  }, [breakdownScene, scenes]);
-
   const handleDraftChange = (sceneId: string, field: keyof SceneDraft, value: string) => {
     setError(null);
     setDrafts(prev => ({
@@ -151,21 +139,6 @@ export function SceneGrid({ scenes, onScenesChange, onSceneUpdated, uploadId }: 
       });
       return next;
     });
-  };
-
-  const closeBreakdownModal = () => {
-    setBreakdownScene(null);
-  };
-
-  const handleRowDoubleClick = (
-    event: ReactMouseEvent<HTMLTableRowElement>,
-    scene: Scene
-  ) => {
-    const target = event.target as HTMLElement | null;
-    if (target && target.closest("input, select, textarea, button, a, [role='button']")) {
-      return;
-    }
-    setBreakdownScene(scene);
   };
 
   const buildUpdatePayload = (scene: Scene, draft: SceneDraft | undefined): SceneUpdatePayload | null => {
@@ -547,7 +520,6 @@ export function SceneGrid({ scenes, onScenesChange, onSceneUpdated, uploadId }: 
                     isSelected ? "bg-blue-100" : "hover:bg-slate-100"
                   )}
                   style={rowStyle}
-                  onDoubleClick={(event) => handleRowDoubleClick(event, scene)}
                 >
                   <td className="px-3 py-2 text-sm text-gray-700">
                     <input
@@ -639,13 +611,6 @@ export function SceneGrid({ scenes, onScenesChange, onSceneUpdated, uploadId }: 
         Tip: Use comma-separated values for cast (e.g., &quot;Alex, Jordan, Pat&quot;). Assign shooting
         days (1-20) and locations here to influence the auto-scheduler (12 pages maximum per day, up to 20 shooting days).
       </div>
-      <BreakdownSheetModal scene={breakdownScene} uploadId={uploadId} onClose={closeBreakdownModal} />
     </div>
   );
 }
-
-
-
-
-
-

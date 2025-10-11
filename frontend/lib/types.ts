@@ -170,3 +170,20 @@ export type BreakdownSheet = {
   production_notes: string[];
   tags: string[];
 };
+
+export type DayOutOfDays = {
+  shooting_days: number[];
+  cast_members: CastMemberDays[];
+};
+
+export type CastMemberDays = {
+  cast_member_name: string;
+  days: Record<number, string>;
+};
+
+export type LocationCompensation = {
+  id: number;
+  location_name: string;
+  fee: number;
+  notes: string | null;
+};
