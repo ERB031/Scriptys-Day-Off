@@ -9,6 +9,7 @@ class DayPlan(BaseModel):
     id: str
     name: str
     shooting_date: str | None = None
+    shooting_location: str | None = None
     total_cost: float = 0.0
     total_minutes: float = 0.0
     total_pages_decimal: float = 0.0
@@ -20,3 +21,7 @@ class DayPlan(BaseModel):
 class AutoScheduleRequest(BaseModel):
     upload_id: str
 
+
+class DayLocationUpdateRequest(BaseModel):
+    upload_id: str | None = None
+    location: str | None = None
