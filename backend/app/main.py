@@ -11,13 +11,26 @@ from .db.session import engine
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: ensure database connection pool is ready
-    async with engine.begin() as conn:
-        # Test the connection
-        await conn.run_sync(lambda _: None)
+    # Startup: attempt to connect to database
+    import logging
+    logger = logging.getLogger(__name__)
+
+    try:
+        async with engine.begin() as conn:
+            # Test the connection
+            await conn.run_sync(lambda _: None)
+        logger.info("Database connection established successfully")
+    except Exception as e:
+        logger.warning(f"Could not connect to database: {e}")
+        logger.warning("Application will start without database connectivity")
+
     yield
+
     # Shutdown: close all database connections
-    await engine.dispose()
+    try:
+        await engine.dispose()
+    except Exception as e:
+        logger.warning(f"Error during database cleanup: {e}")
 
 
 def get_application() -> FastAPI:

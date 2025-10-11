@@ -36,6 +36,12 @@ ACRONYM_WHITELIST = {
     "ATF",
 }
 
+STOP_WORDS = {
+    "A", "AN", "THE", "OF", "IN", "ON", "AT", "FOR", "WITH", "BY",
+    "IS", "AM", "ARE", "WAS", "WERE", "BE", "BEING", "BEEN",
+    "AND", "BUT", "OR", "SO", "IF", "AS", "TO", "FROM"
+}
+
 LOCATION_SPLIT_PATTERN = re.compile(r"[/,&\-]+")
 
 
@@ -48,6 +54,8 @@ def _normalize_breakdown_label(value: str) -> str:
         if not cleaned:
             continue
         upper_token = cleaned.upper()
+        if upper_token in STOP_WORDS:
+            continue
         if upper_token in ACRONYM_WHITELIST:
             formatted.append(upper_token)
         elif len(cleaned) <= 3 and cleaned.isalpha():

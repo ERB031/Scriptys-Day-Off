@@ -64,7 +64,7 @@ export default function HomePage() {
       const response = await uploadScript(file);
       setUploadId(response.upload_id);
       setScenes(response.scenes);
-      const plan = await requestAutoSchedule(response.upload_id);
+      const plan = await fetchDayPlans(response.upload_id);
       updateDays(plan);
     } catch (err) {
       setError(parseApiError(err, "Upload failed")); // Use the utility
@@ -87,15 +87,7 @@ export default function HomePage() {
   };
 
   const handleSceneUpdated = async (_scene?: Scene | null) => {
-    if (!uploadId) {
-      return;
-    }
-    try {
-      const plan = await requestAutoSchedule(uploadId);
-      updateDays(plan);
-    } catch (err) {
-      setError(parseApiError(err, "Failed to refresh schedule")); // Use the utility
-    }
+    setScheduleVersion((prev) => prev + 1);
   };
 
   const tabs: { id: TabType; label: string }[] = [

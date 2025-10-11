@@ -13,6 +13,7 @@ from ...schemas.scene import PageLengthRequest, PageLengthResponse, SceneUploadR
 from ...services.fdx_parser import FDXParser, ParsedScene
 from ...services.scene_summarizer import SceneSummarizer
 from ...services.element_detector import ElementDetector
+from ...services.character_analyzer import CharacterAnalyzer
 from .utils import scene_model_to_schema
 
 router = APIRouter()
@@ -94,6 +95,14 @@ async def ingest_script(
                     existing_element_keys.add(element_key)
     except Exception as exc:
         logger.warning("Element detection failed; continuing without AI-detected elements. error=%s", exc)
+
+    # Analyze characters using Gemini
+    char_analyzer = CharacterAnalyzer()
+    try:
+        character_analysis = await char_analyzer.analyze_characters(parsed_scenes)
+        logger.info(f"Character analysis completed: {character_analysis}")
+    except Exception as exc:
+        logger.warning("Character analysis failed; continuing without it. error=%s", exc)
 
     self_assign_costs(parsed_scenes)
 
