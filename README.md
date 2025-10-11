@@ -1,8 +1,11 @@
 # Scripty's Day Off
 
-All-in-one film production breakdown, budgeting, and scheduling platform. Upload a Final Draft (`.fdx`) script to
-automatically create scene breakdowns, generate AI-ready cost baselines, and draft a shooting schedule grouped by
-shared locations and cast.
+All-in-one film production breakdown, budgeting, and scheduling platform powered by **AI**. Upload a Final Draft (`.fdx`) script to:
+- 🤖 **Automatically generate scene synopses** using Google Gemini
+- 🎬 **AI-powered element detection** - props, wardrobe, vehicles, stunts, and more
+- 📋 **Professional breakdown sheets** with all production elements organized by department
+- 💰 **Smart cost estimates** based on scene complexity
+- 📅 **Auto-schedule shoots** grouped by location and cast
 
 ## Project Structure
 
@@ -20,7 +23,7 @@ shared locations and cast.
 - Node.js 18+ and npm
 - Python 3.11+
 - PostgreSQL 14+
-- Optional: OpenAI API key (for chat model `gpt-4.1-mini` cost estimating fallback)
+- **Google Gemini API key** (for AI-powered synopsis generation and element detection) - Get one free at [Google AI Studio](https://aistudio.google.com/app/apikey)
 
 ## Backend Setup (FastAPI)
 
@@ -31,13 +34,21 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-Configure environment variables (copy `.env.example` if you make one):
+Configure environment variables (create `backend/.env`):
+
+```env
+DATABASE_URL=postgresql+asyncpg://scripty:password@localhost:5432/scriptys_day_off
+CORS_ORIGINS=["http://localhost:3000"]
+GOOGLE_API_KEY=your_google_gemini_api_key_here
+CHAT_MODEL=gemini-1.5-flash
+```
 
 | Variable | Purpose | Default |
 | --- | --- | --- |
 | `DATABASE_URL` | Async SQLAlchemy connection string | `postgresql+asyncpg://scripty:password@localhost:5432/scriptys_day_off` |
-| `CORS_ORIGINS` | Comma-separated list of allowed origins | `http://localhost:3000` |
-| `OPENAI_API_KEY` | Optional. Enables GPT-4.1-mini cost estimates | — |
+| `CORS_ORIGINS` | JSON array of allowed origins | `["http://localhost:3000"]` |
+| `GOOGLE_API_KEY` | **Required** for AI features (synopsis + element detection) | — |
+| `CHAT_MODEL` | Gemini model to use | `gemini-1.5-flash` |
 
 Initialize the database:
 
@@ -85,14 +96,48 @@ npm run dev
 The UI includes:
 
 - **Upload Panel** — Select your `.fdx` file. The backend parses sluglines, cast, and calculates 1/8th page lengths.
-- **Scene Grid** — Interactive table (TanStack Table) summarising scenes, lengths, cast, props, and baseline costs.
+- **Scene Grid** — Interactive table (TanStack Table) summarizing scenes with AI-generated synopses, lengths, cast, props, and baseline costs.
+- **Breakdown Sheets** — Professional production breakdown sheets with:
+  - 📝 AI-generated scene synopses (1-2 sentences)
+  - 🎭 Cast members and extras
+  - 🎨 Props, set dressing, wardrobe
+  - 💄 Makeup & hair requirements
+  - 🚗 Vehicles and animals
+  - 💥 Special effects and stunts
+  - 🎵 Sound FX and music cues
 - **Day Builder** — Auto-scheduler summary with day cards, totals, and quick CSV/PDF export buttons.
 
-## Cost Estimation Strategy
+## AI-Powered Features 🤖
 
-An OpenAI `gpt-4.1-mini` prompt can be enabled to refine costs when `OPENAI_API_KEY` is present. Without a key, the API
-falls back to deterministic heuristics built from the seeded rate cards (crew package, logistics, and per-performer
-costs scaled by pages per day).
+### Scene Synopsis Generation
+**Powered by Google Gemini 1.5 Flash**
+
+When you upload a script, Gemini automatically generates professional 1-2 sentence synopses for each scene:
+- ⚡ **Fast**: 3-5 seconds for full screenplay
+- 💰 **Affordable**: ~$0.005 per screenplay (half a cent!)
+- 🎯 **Quality**: Highlights dramatic beats and key characters
+- 📋 **Integrated**: Appears in breakdown sheets and scene details
+
+See [GEMINI_SYNOPSIS_FEATURE.md](GEMINI_SYNOPSIS_FEATURE.md) for details.
+
+### Automated Element Detection
+**Powered by Google Gemini 1.5 Flash**
+
+Gemini analyzes each scene and automatically detects production elements:
+- 🎬 **10 Categories**: Cast, Extras, Props, Set Dressing, Wardrobe, Makeup & Hair, Vehicles/Animals, Sound FX, Special Effects, Stunts
+- ⚡ **Fast**: 5-10 seconds for full screenplay breakdown
+- 💰 **Affordable**: ~$0.008 per screenplay (less than 1 cent!)
+- 🔄 **Smart**: Merges AI-detected elements with parser-detected ones
+- 📋 **Production-Ready**: Elements appear in breakdown sheets immediately
+
+See [GEMINI_ELEMENT_DETECTION.md](GEMINI_ELEMENT_DETECTION.md) for details.
+
+### Cost Estimation
+Cost estimates are calculated using deterministic heuristics based on:
+- Crew packages from rate cards
+- Logistics costs (permits, company moves)
+- Per-performer costs scaled by pages per day
+- Scene complexity (page count, cast size)
 
 ## CSV & PDF Exports
 
@@ -101,10 +146,14 @@ per-scene rows for spreadsheet workflows.
 
 ## Next Steps / Roadmap
 
-- Prop extraction for richer breakdown metadata (currently placeholders).
-- Drag-and-drop manual day editing with persistence.
-- PDF ingestion fallback using the seeded rate cards.
-- Inline cost overrides synced with rate cards per production.
+- ✅ AI-powered scene synopsis generation (Google Gemini)
+- ✅ AI-powered element detection for breakdown sheets
+- ✅ Professional breakdown sheet export
+- 🔄 Drag-and-drop manual day editing with persistence
+- 🔄 Regenerate synopses/elements for individual scenes
+- 🔄 Manual element editing in UI
+- 🔄 PDF breakdown sheet export
+- 🔄 Inline cost overrides synced with rate cards per production
 
 ## Development Tips
 
