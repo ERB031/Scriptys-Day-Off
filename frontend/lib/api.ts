@@ -31,7 +31,7 @@ async function parseResponse<T>(response: Response): Promise<T> {
 
 export async function fetchScenes(uploadId?: string): Promise<Scene[]> {
   const query = uploadId ? `?upload_id=${encodeURIComponent(uploadId)}` : "";
-  const res = await fetch(`${API_BASE_URL}/api/v1/scenes${query}`);
+  const res = await fetch(`${API_BASE_URL}/scenes${query}`);
   return parseResponse<Scene[]>(res);
 }
 
@@ -40,7 +40,7 @@ export async function fetchDayPlans(
 ): Promise<DayPlan[]> {
   const { uploadId } = options;
   const query = uploadId ? `?upload_id=${encodeURIComponent(uploadId)}` : "";
-  const res = await fetch(`${API_BASE_URL}/api/v1/schedule/days${query}`);
+  const res = await fetch(`${API_BASE_URL}/schedule/days${query}`);
   return parseResponse<DayPlan[]>(res);
 }
 
@@ -53,7 +53,7 @@ export async function uploadScript(
   if (options.parseOnly) {
     formData.append("parse_only", "true");
   }
-  const res = await fetch(`${API_BASE_URL}/api/v1/ingest/script`, {
+  const res = await fetch(`${API_BASE_URL}/ingest/script`, {
     method: "POST",
     body: formData
   });
@@ -61,7 +61,7 @@ export async function uploadScript(
 }
 
 export async function requestAutoSchedule(uploadId: string): Promise<DayPlan[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/schedule/auto`, {
+  const res = await fetch(`${API_BASE_URL}/schedule/auto`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ upload_id: uploadId })
@@ -70,12 +70,12 @@ export async function requestAutoSchedule(uploadId: string): Promise<DayPlan[]> 
 }
 
 export async function fetchRateCards(): Promise<RateCard[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/rate_cards`);
+  const res = await fetch(`${API_BASE_URL}/rate_cards`);
   return parseResponse<RateCard[]>(res);
 }
 
 export async function fetchLatestUpload(): Promise<UploadSnapshot | null> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/ingest/latest`);
+  const res = await fetch(`${API_BASE_URL}/ingest/latest`);
   if (res.status === 404) {
     return null;
   }
@@ -89,7 +89,7 @@ export type SceneUpdatePayload = {
 };
 
 export async function updateScene(sceneId: string, payload: SceneUpdatePayload): Promise<Scene> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/scenes/${sceneId}`, {
+  const res = await fetch(`${API_BASE_URL}/scenes/${sceneId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
@@ -104,7 +104,7 @@ export type BatchSceneAssignmentPayload = {
 };
 
 export async function assignScenes(payload: BatchSceneAssignmentPayload): Promise<Scene[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/scenes/assignments/batch`, {
+  const res = await fetch(`${API_BASE_URL}/scenes/assignments/batch`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
@@ -113,7 +113,7 @@ export async function assignScenes(payload: BatchSceneAssignmentPayload): Promis
 }
 
 export async function deleteScene(sceneId: string): Promise<void> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/scenes/${sceneId}`, {
+  const res = await fetch(`${API_BASE_URL}/scenes/${sceneId}`, {
     method: "DELETE"
   });
   if (!res.ok) {
@@ -123,19 +123,19 @@ export async function deleteScene(sceneId: string): Promise<void> {
 }
 
 export async function fetchFlipboard(): Promise<any> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/schedule/flipboard`);
+  const res = await fetch(`${API_BASE_URL}/schedule/flipboard`);
   return parseResponse(res);
 }
 
 export async function fetchDayOutOfDays(uploadId?: string): Promise<any> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/schedule/dood${uploadId ? `?upload_id=${encodeURIComponent(uploadId)}` : ""}`);
+  const res = await fetch(`${API_BASE_URL}/schedule/dood${uploadId ? `?upload_id=${encodeURIComponent(uploadId)}` : ""}`);
   return parseResponse(res);
 }
 
 // Actor Compensation APIs
 export async function fetchActorCompensation(uploadId?: string): Promise<ActorCompensation[]> {
   const query = uploadId ? `?upload_id=${encodeURIComponent(uploadId)}` : "";
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/actors${query}`);
+  const res = await fetch(`${API_BASE_URL}/compensation/actors${query}`);
   return parseResponse(res);
 }
 
@@ -146,7 +146,7 @@ export async function createActorCompensation(data: {
   union_status: UnionStatus;
   notes?: string | null;
 }): Promise<ActorCompensation> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/actors`, {
+  const res = await fetch(`${API_BASE_URL}/compensation/actors`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -163,7 +163,7 @@ export async function updateActorCompensation(
     notes?: string | null;
   }
 ): Promise<ActorCompensation> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/actors/${id}`, {
+  const res = await fetch(`${API_BASE_URL}/compensation/actors/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -172,7 +172,7 @@ export async function updateActorCompensation(
 }
 
 export async function deleteActorCompensation(id: number): Promise<void> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/actors/${id}`, {
+  const res = await fetch(`${API_BASE_URL}/compensation/actors/${id}`, {
     method: "DELETE",
   });
   if (!res.ok) {
@@ -183,7 +183,7 @@ export async function deleteActorCompensation(id: number): Promise<void> {
 
 // Location Compensation APIs
 export async function fetchLocationCompensation(): Promise<any[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/locations`);
+  const res = await fetch(`${API_BASE_URL}/compensation/locations`);
   return parseResponse(res);
 }
 
@@ -194,7 +194,7 @@ export async function createLocationCompensation(data: {
   insurance_cost: number;
   notes?: string;
 }): Promise<any> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/locations`, {
+  const res = await fetch(`${API_BASE_URL}/compensation/locations`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -208,7 +208,7 @@ export async function updateLocationCompensation(id: number, data: {
   insurance_cost?: number;
   notes?: string;
 }): Promise<any> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/locations/${id}`, {
+  const res = await fetch(`${API_BASE_URL}/compensation/locations/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -217,7 +217,7 @@ export async function updateLocationCompensation(id: number, data: {
 }
 
 export async function deleteLocationCompensation(id: number): Promise<void> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/locations/${id}`, {
+  const res = await fetch(`${API_BASE_URL}/compensation/locations/${id}`, {
     method: "DELETE",
   });
   if (!res.ok) {
@@ -227,14 +227,14 @@ export async function deleteLocationCompensation(id: number): Promise<void> {
 }
 
 export async function syncActorCompensation(): Promise<any[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/actors/sync`, {
+  const res = await fetch(`${API_BASE_URL}/compensation/actors/sync`, {
     method: "POST"
   });
   return parseResponse(res);
 }
 export async function fetchCharacterAssignments(uploadId?: string): Promise<CharacterAssignment[]> {
   const query = uploadId ? `?upload_id=${encodeURIComponent(uploadId)}` : "";
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/characters${query}`);
+  const res = await fetch(`${API_BASE_URL}/compensation/characters${query}`);
   const payload = await parseResponse<{ characters: CharacterAssignment[] }>(res);
   return payload.characters;
 }
@@ -244,7 +244,7 @@ export async function assignCharacterToActor(data: {
   actor_id: number | null;
   upload_id?: string | null;
 }): Promise<CharacterAssignment> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/characters/assign`, {
+  const res = await fetch(`${API_BASE_URL}/compensation/characters/assign`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -253,7 +253,7 @@ export async function assignCharacterToActor(data: {
 }
 
 export async function syncLocationCompensation(): Promise<any[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/locations/sync`, {
+  const res = await fetch(`${API_BASE_URL}/compensation/locations/sync`, {
     method: "POST"
   });
   return parseResponse(res);
@@ -263,7 +263,7 @@ export async function updateScheduleDayLocation(
   scriptDay: number,
   data: { location: string | null; upload_id?: string | null }
 ): Promise<DayPlan[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/schedule/days/${scriptDay}/location`, {
+  const res = await fetch(`${API_BASE_URL}/schedule/days/${scriptDay}/location`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -276,7 +276,7 @@ export async function updateScheduleDayLocation(
 // ============================================================================
 
 export async function fetchElementCategories(): Promise<ElementCategory[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/elements/categories`);
+  const res = await fetch(`${API_BASE_URL}/elements/categories`);
   return parseResponse(res);
 }
 
@@ -285,7 +285,7 @@ export async function fetchElementCategories(): Promise<ElementCategory[]> {
 // ============================================================================
 
 export async function addSceneTag(sceneId: string, tag: string): Promise<SceneTag> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/elements/scenes/${sceneId}/tags`, {
+  const res = await fetch(`${API_BASE_URL}/elements/scenes/${sceneId}/tags`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ tag }),
@@ -294,12 +294,12 @@ export async function addSceneTag(sceneId: string, tag: string): Promise<SceneTa
 }
 
 export async function fetchSceneTags(sceneId: string): Promise<SceneTag[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/elements/scenes/${sceneId}/tags`);
+  const res = await fetch(`${API_BASE_URL}/elements/scenes/${sceneId}/tags`);
   return parseResponse(res);
 }
 
 export async function deleteSceneTag(sceneId: string, tagId: number): Promise<void> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/elements/scenes/${sceneId}/tags/${tagId}`, {
+  const res = await fetch(`${API_BASE_URL}/elements/scenes/${sceneId}/tags/${tagId}`, {
     method: "DELETE",
   });
   if (!res.ok) {
@@ -317,7 +317,7 @@ export async function addSceneNote(
   noteText: string,
   noteType: NoteType = "GENERAL"
 ): Promise<SceneNote> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/elements/scenes/${sceneId}/notes`, {
+  const res = await fetch(`${API_BASE_URL}/elements/scenes/${sceneId}/notes`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ note_text: noteText, note_type: noteType }),
@@ -326,7 +326,7 @@ export async function addSceneNote(
 }
 
 export async function fetchSceneNotes(sceneId: string): Promise<SceneNote[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/elements/scenes/${sceneId}/notes`);
+  const res = await fetch(`${API_BASE_URL}/elements/scenes/${sceneId}/notes`);
   return parseResponse(res);
 }
 
@@ -335,7 +335,7 @@ export async function updateSceneNote(
   noteId: number,
   data: { note_text?: string; note_type?: NoteType }
 ): Promise<SceneNote> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/elements/scenes/${sceneId}/notes/${noteId}`, {
+  const res = await fetch(`${API_BASE_URL}/elements/scenes/${sceneId}/notes/${noteId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -344,7 +344,7 @@ export async function updateSceneNote(
 }
 
 export async function deleteSceneNote(sceneId: string, noteId: number): Promise<void> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/elements/scenes/${sceneId}/notes/${noteId}`, {
+  const res = await fetch(`${API_BASE_URL}/elements/scenes/${sceneId}/notes/${noteId}`, {
     method: "DELETE",
   });
   if (!res.ok) {
@@ -368,7 +368,7 @@ export async function addSceneElement(
     is_critical?: boolean;
   }
 ): Promise<SceneElement> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/elements/scenes/${sceneId}/elements`, {
+  const res = await fetch(`${API_BASE_URL}/elements/scenes/${sceneId}/elements`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -377,7 +377,7 @@ export async function addSceneElement(
 }
 
 export async function fetchSceneElements(sceneId: string): Promise<SceneElement[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/elements/scenes/${sceneId}/elements`);
+  const res = await fetch(`${API_BASE_URL}/elements/scenes/${sceneId}/elements`);
   return parseResponse(res);
 }
 
@@ -393,7 +393,7 @@ export async function updateSceneElement(
     is_critical?: boolean;
   }
 ): Promise<SceneElement> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/elements/scenes/${sceneId}/elements/${elementId}`, {
+  const res = await fetch(`${API_BASE_URL}/elements/scenes/${sceneId}/elements/${elementId}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -402,7 +402,7 @@ export async function updateSceneElement(
 }
 
 export async function deleteSceneElement(sceneId: string, elementId: number): Promise<void> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/elements/scenes/${sceneId}/elements/${elementId}`, {
+  const res = await fetch(`${API_BASE_URL}/elements/scenes/${sceneId}/elements/${elementId}`, {
     method: "DELETE",
   });
   if (!res.ok) {
@@ -420,7 +420,7 @@ export async function fetchMasterElements(
   categoryId?: number
 ): Promise<MasterElement[]> {
   const query = categoryId ? `?category_id=${categoryId}` : "";
-  const res = await fetch(`${API_BASE_URL}/api/v1/elements/uploads/${uploadId}/master-elements${query}`);
+  const res = await fetch(`${API_BASE_URL}/elements/uploads/${uploadId}/master-elements${query}`);
   return parseResponse(res);
 }
 
@@ -429,11 +429,11 @@ export async function fetchMasterElements(
 // ============================================================================
 
 export async function fetchBreakdownSheet(sceneId: string): Promise<BreakdownSheet> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/breakdown/scenes/${sceneId}/breakdown`);
+  const res = await fetch(`${API_BASE_URL}/breakdown/scenes/${sceneId}/breakdown`);
   return parseResponse(res);
 }
 
 export async function fetchAllBreakdownSheets(uploadId: string): Promise<BreakdownSheet[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/breakdown/uploads/${uploadId}/breakdown-sheets`);
+  const res = await fetch(`${API_BASE_URL}/breakdown/uploads/${uploadId}/breakdown-sheets`);
   return parseResponse(res);
 }
