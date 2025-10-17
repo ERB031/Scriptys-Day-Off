@@ -35,8 +35,9 @@ export async function fetchScenes(uploadId?: string): Promise<Scene[]> {
   return parseResponse<Scene[]>(res);
 }
 
-export async function fetchDayPlans(): Promise<DayPlan[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/schedule/days`);
+export async function fetchDayPlans(uploadId?: string): Promise<DayPlan[]> {
+  const query = uploadId ? `?upload_id=${encodeURIComponent(uploadId)}` : "";
+  const res = await fetch(`${API_BASE_URL}/api/v1/schedule/days${query}`);
   return parseResponse<DayPlan[]>(res);
 }
 

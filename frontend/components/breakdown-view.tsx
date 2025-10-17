@@ -144,6 +144,8 @@ function AddElementForm({
   const [formData, setFormData] = useState<Omit<SceneElement, 'id' | 'created_at' | 'updated_at'>>({
     scene_id: scene.id,
     category_id: categories[0]?.id || 1,
+    category_name: categories[0]?.category_name || "",
+    category_color: categories[0]?.color || "#D1D5DB",
     element_name: "",
     description: "",
     quantity: 1,
@@ -153,9 +155,21 @@ function AddElementForm({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    const isCheckbox = type === 'checkbox';
-    const isNumber = type === 'number';
-    setFormData((prev) => ({ ...prev, [name]: isCheckbox ? (e.target as HTMLInputElement).checked : isNumber ? parseInt(value) : value }));
+
+    if (name === "category_id") {
+      const categoryId = parseInt(value);
+      const selectedCategory = categories.find((cat) => cat.id === categoryId);
+      setFormData((prev) => ({
+        ...prev,
+        category_id: categoryId,
+        category_name: selectedCategory?.category_name || "",
+        category_color: selectedCategory?.color || "#D1D5DB",
+      }));
+    } else {
+      const isCheckbox = type === 'checkbox';
+      const isNumber = type === 'number';
+      setFormData((prev) => ({ ...prev, [name]: isCheckbox ? (e.target as HTMLInputElement).checked : isNumber ? parseInt(value) : value }));
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {

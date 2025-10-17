@@ -124,10 +124,10 @@ export function BreakdownSheetModal({
               {Object.entries(
                 scene.elements.reduce(
                   (acc, el) => {
-                    if (!acc[el.category]) {
-                      acc[el.category] = [];
+                    if (!acc[el.category_name]) {
+                      acc[el.category_name] = [];
                     }
-                    acc[el.category].push(el);
+                    acc[el.category_name].push(el);
                     return acc;
                   },
                   {} as Record<string, typeof scene.elements>
