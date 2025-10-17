@@ -120,3 +120,62 @@ CREATE TABLE IF NOT EXISTS schedule_day_overrides (
 );
 
 CREATE INDEX IF NOT EXISTS idx_schedule_day_overrides_upload ON schedule_day_overrides(upload_id);
+
+CREATE TABLE IF NOT EXISTS element_categories (
+    id SERIAL PRIMARY KEY,
+    category_name TEXT NOT NULL UNIQUE,
+    display_order INTEGER NOT NULL DEFAULT 0,
+    description TEXT,
+    color TEXT NOT NULL DEFAULT '#808080'
+);
+
+CREATE TABLE IF NOT EXISTS scene_elements (
+    id SERIAL PRIMARY KEY,
+    scene_id UUID NOT NULL REFERENCES scenes(id) ON DELETE CASCADE,
+    category_id INTEGER NOT NULL REFERENCES element_categories(id) ON DELETE CASCADE,
+    element_name TEXT NOT NULL,
+    description TEXT,
+    quantity INTEGER NOT NULL DEFAULT 1,
+    notes TEXT,
+    is_critical BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_scene_elements_scene ON scene_elements(scene_id);
+CREATE INDEX IF NOT EXISTS idx_scene_elements_category ON scene_elements(category_id);
+
+CREATE TABLE IF NOT EXISTS scene_tags (
+    id SERIAL PRIMARY KEY,
+    scene_id UUID NOT NULL REFERENCES scenes(id) ON DELETE CASCADE,
+    tag TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_scene_tags_scene ON scene_tags(scene_id);
+
+CREATE TABLE IF NOT EXISTS scene_notes (
+    id SERIAL PRIMARY KEY,
+    scene_id UUID NOT NULL REFERENCES scenes(id) ON DELETE CASCADE,
+    note_text TEXT NOT NULL,
+    note_type TEXT NOT NULL DEFAULT 'GENERAL',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_scene_notes_scene ON scene_notes(scene_id);
+
+CREATE TABLE IF NOT EXISTS master_elements (
+    id SERIAL PRIMARY KEY,
+    upload_id UUID NOT NULL REFERENCES script_uploads(id) ON DELETE CASCADE,
+    category_id INTEGER NOT NULL REFERENCES element_categories(id) ON DELETE CASCADE,
+    element_name TEXT NOT NULL,
+    description TEXT,
+    total_scenes INTEGER NOT NULL DEFAULT 0,
+    notes TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_master_elements_upload ON master_elements(upload_id);
+CREATE INDEX IF NOT EXISTS idx_master_elements_category ON master_elements(category_id);

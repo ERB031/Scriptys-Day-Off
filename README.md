@@ -144,6 +144,41 @@ Cost estimates are calculated using deterministic heuristics based on:
 Downloadable from the Day Builder panel. `fpdf2` generates lean PDF summaries; CSV exports embed day-level and
 per-scene rows for spreadsheet workflows.
 
+## Deployment
+
+### Backend (FastAPI on Render.com)
+
+The FastAPI backend is deployed on [Render.com](https://render.com) with the following configuration:
+
+**Build Command:**
+```bash
+pip install -r requirements.txt
+```
+
+**Start Command:**
+```bash
+start-Scripty
+```
+
+### Database (Neon Console)
+
+PostgreSQL database is hosted on [Neon Console](https://neon.tech), a serverless Postgres platform optimized for modern applications.
+
+**Production Environment Variables:**
+```env
+DATABASE_URL=postgresql+asyncpg://[username]:[password]@[neon-host]/scriptys_day_off
+CORS_ORIGINS=["https://your-frontend-domain.com"]
+GOOGLE_API_KEY=your_google_gemini_api_key_here
+CHAT_MODEL=gemini-1.5-flash
+```
+
+**Database Initialization:**
+After creating your Neon database, run the schema and seed scripts:
+```bash
+psql [your-neon-connection-string] < backend/database/schema.sql
+psql [your-neon-connection-string] < backend/database/seed_rate_cards.sql
+```
+
 ## Next Steps / Roadmap
 
 - ✅ AI-powered scene synopsis generation (Google Gemini)

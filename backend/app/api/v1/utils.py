@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from ...db.models import SceneModel
+from ...schemas.elements import SceneElement, SceneNote, SceneTag
 from ...schemas.scene import Scene, SceneCastAssignment
 
 
@@ -33,6 +34,18 @@ def scene_model_to_schema(
             )
         )
 
+    elements: list[SceneElement] = []
+    for element in model.elements:
+        schema_element = SceneElement.model_validate(element, from_attributes=True)
+        if element.category:
+            schema_element = schema_element.model_copy(
+                update={
+                    "category_name": element.category.category_name,
+                    "category_color": element.category.color,
+                }
+            )
+        elements.append(schema_element)
+
     return Scene(
         id=str(model.id),
         name=model.name,
@@ -49,4 +62,8 @@ def scene_model_to_schema(
         props=[prop.prop_name for prop in model.props_used],
         script_day=model.script_day,
         schedule_day_id=str(model.schedule_day_id) if model.schedule_day_id else None,
+        synopsis=model.synopsis,
+        tags=[SceneTag.model_validate(tag, from_attributes=True) for tag in model.tags],
+        notes=[SceneNote.model_validate(note, from_attributes=True) for note in model.notes],
+        elements=elements,
     )

@@ -226,11 +226,27 @@ async def list_scenes_for_upload(session: AsyncSession, upload_id: str | UUID) -
             selectinload(SceneModel.props_used),
             selectinload(SceneModel.tags),
             selectinload(SceneModel.notes),
-            selectinload(SceneModel.elements),
+            selectinload(SceneModel.elements).selectinload(SceneElementModel.category),
         )
         .order_by(SceneModel.sequence_index.asc())
     )
     return list(result.scalars().unique().all())
+
+
+async def get_scene_by_id(session: AsyncSession, scene_id: str | UUID) -> SceneModel | None:
+    scene_uuid = scene_id if isinstance(scene_id, UUID) else UUID(scene_id)
+    result = await session.execute(
+        select(SceneModel)
+        .where(SceneModel.id == scene_uuid)
+        .options(
+            selectinload(SceneModel.cast_members),
+            selectinload(SceneModel.props_used),
+            selectinload(SceneModel.tags),
+            selectinload(SceneModel.notes),
+            selectinload(SceneModel.elements).selectinload(SceneElementModel.category),
+        )
+    )
+    return result.scalars().first()
 
 
 async def get_latest_upload(session: AsyncSession) -> ScriptUploadModel | None:
@@ -254,7 +270,7 @@ async def update_scene_metadata(
             selectinload(SceneModel.props_used),
             selectinload(SceneModel.tags),
             selectinload(SceneModel.notes),
-            selectinload(SceneModel.elements),
+            selectinload(SceneModel.elements).selectinload(SceneElementModel.category),
         )
     )
     scene = result.scalars().first()

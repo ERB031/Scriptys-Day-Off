@@ -1,0 +1,11 @@
+﻿Acct number,Name,Budget,Budget category,Status,Notes,Date
+1010,Story & Rights,"$250,000.00",Abone-the-line,Completed,Screenplay by Taylor Sheridan,"October 2, 2025"
+1020,Producer,"$800,000.00",Abone-the-line,In Progress - On Track,"Basil Iwanyk, Edward McDonnell, Molly Smith",
+1030,Director,"$2,500,000.00",Abone-the-line,Completed,Denis Villeneuve,
+1040,Cast,"$4,900,000.00",Abone-the-line,Not started,"Blunt $3M, del Toro $2.5M, Brolin $2M, Supporting $1.45M",
+2010,Script Development,"$50,000.00",Pre-production,Completed,"Rewrites, polish",
+2020,Location Scouting,"$180,000.00",Pre-production,Completed,"Arizona, New Mexico, Mexico",
+3010,Crew Salaries,"$3,200,000.00",Production,On Hold,All below-the-line crew,
+4010,Editorial,"$850,000.00",Post-production,In Progress - On Track,"Joe Walker, assistants, equipment",
+4020,VFX,"$1,000,000.00",Post-production,In Progress -  Over Budget,,
+5020,Legal & Accounting,"$350,000.00",Other,Not started,"Contracts, clearances, auditing",
