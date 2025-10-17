@@ -29,13 +29,15 @@ async function parseResponse<T>(response: Response): Promise<T> {
   return response.json() as Promise<T>;
 }
 
-export async function fetchScenes(): Promise<Scene[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/scenes`);
+export async function fetchScenes(uploadId?: string): Promise<Scene[]> {
+  const query = uploadId ? `?upload_id=${encodeURIComponent(uploadId)}` : "";
+  const res = await fetch(`${API_BASE_URL}/api/v1/scenes${query}`);
   return parseResponse<Scene[]>(res);
 }
 
-export async function fetchDayPlans(): Promise<DayPlan[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/schedule/days`);
+export async function fetchDayPlans(uploadId?: string): Promise<DayPlan[]> {
+  const query = uploadId ? `?upload_id=${encodeURIComponent(uploadId)}` : "";
+  const res = await fetch(`${API_BASE_URL}/api/v1/schedule/days${query}`);
   return parseResponse<DayPlan[]>(res);
 }
 
