@@ -43,12 +43,22 @@ def get_application() -> FastAPI:
 
     # Ensure settings are loaded
     loaded_settings = settings
+
+    # Configure CORS with support for regex patterns
+    cors_origins = loaded_settings.cors_origins.copy()
+
+    # Add regex pattern for Vercel preview deployments if in production
+    if loaded_settings.app_env == "production":
+        # This will match all Vercel preview URLs
+        cors_origins.append("https://*.vercel.app")
+
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=loaded_settings.cors_origins,
+        allow_origins=cors_origins,
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
+        allow_origin_regex=r"https://.*\.vercel\.app",
     )
 
     app.include_router(api_router, prefix="/api/v1")
