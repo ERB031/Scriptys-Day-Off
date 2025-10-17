@@ -64,7 +64,7 @@ export default function HomePage() {
       const response = await uploadScript(file);
       setUploadId(response.upload_id);
       setScenes(response.scenes);
-      const plan = await fetchDayPlans(response.upload_id);
+      const plan = await fetchDayPlans({ uploadId: response.upload_id });
       updateDays(plan);
     } catch (err) {
       setError(parseApiError(err, "Upload failed")); // Use the utility
