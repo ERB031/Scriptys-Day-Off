@@ -2,7 +2,7 @@ import { ActorCompensation, LocationCompensation } from "./types";
 import { API_BASE_URL } from "./api";
 
 export async function fetchActorCompensation(): Promise<ActorCompensation[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/actors`);
+  const res = await fetch(`${API_BASE_URL}/compensation/actors`);
   if (!res.ok) {
     throw new Error("Failed to fetch actor compensation");
   }
@@ -10,7 +10,7 @@ export async function fetchActorCompensation(): Promise<ActorCompensation[]> {
 }
 
 export async function fetchLocationCompensation(): Promise<LocationCompensation[]> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/locations`);
+  const res = await fetch(`${API_BASE_URL}/compensation/locations`);
   if (!res.ok) {
     throw new Error("Failed to fetch location compensation");
   }
@@ -18,7 +18,7 @@ export async function fetchLocationCompensation(): Promise<LocationCompensation[
 }
 
 export async function updateActorCompensation(actorId: number, data: ActorCompensation): Promise<ActorCompensation> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/actors/${actorId}`, {
+  const res = await fetch(`${API_BASE_URL}/compensation/actors/${actorId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -32,7 +32,7 @@ export async function updateActorCompensation(actorId: number, data: ActorCompen
 }
 
 export async function updateLocationCompensation(locationId: number, data: LocationCompensation): Promise<LocationCompensation> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/locations/${locationId}`, {
+  const res = await fetch(`${API_BASE_URL}/compensation/locations/${locationId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -46,7 +46,7 @@ export async function updateLocationCompensation(locationId: number, data: Locat
 }
 
 export async function createActorCompensation(data: Omit<ActorCompensation, 'id'>): Promise<ActorCompensation> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/actors`, {
+  const res = await fetch(`${API_BASE_URL}/compensation/actors`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export async function createActorCompensation(data: Omit<ActorCompensation, 'id'
 }
 
 export async function createLocationCompensation(data: Omit<LocationCompensation, 'id'>): Promise<LocationCompensation> {
-  const res = await fetch(`${API_BASE_URL}/api/v1/compensation/locations`, {
+  const res = await fetch(`${API_BASE_URL}/compensation/locations`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

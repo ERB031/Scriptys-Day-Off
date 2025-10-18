@@ -18,8 +18,8 @@ import {
 
 export const API_BASE_URL =
   typeof window === "undefined"
-    ? process.env.BACKEND_URL || "http://localhost:8000"
-    : process.env.NEXT_PUBLIC_BACKEND_URL || process.env.BACKEND_URL || "http://localhost:8000";
+    ? process.env.BACKEND_URL || "http://localhost:8000/api/v1"
+    : "/api/v1";
 
 async function parseResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
