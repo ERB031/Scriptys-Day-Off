@@ -37,10 +37,7 @@ const LOCATION_COLOR_PALETTE = [
   "#e11d48"
 ];
 
-const DOWNLOAD_BASE_URL = (() => {
-  const normalized = API_BASE_URL.replace(/\/$/, "");
-  return normalized.endsWith("/api/v1") ? normalized : `${normalized}/api/v1`;
-})();
+const DOWNLOAD_BASE_URL = API_BASE_URL;
 
 type DayBucket = {
   id: string;
